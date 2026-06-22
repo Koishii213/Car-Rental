@@ -84,23 +84,23 @@
               <ul class="new_list">
                 <li class="new_item">
                   <div></div>
-                  <div class="new_label">Basic Insurance</div>
+                  <label for="Basic Insurance">Basic Insurance</label>
                   <div class="new_price">${{car.insurance | number:'1.2-2'}}/day</div>
                   <div class="new_check">
-                    <input id="basic-insurance" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="car.insurance">
+                    <input id="Basic Insurance" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="car.insurance">
                   </div>
                 </li>
                 <li class="new_item">
                   <div></div>
-                  <div class="new_label">Personal Accident Protection</div>
+                  <label for="PersonalAccidentProtection">Personal Accident Protection</label>
                   <div class="new_price">${{price.pap | number:'1.2-2'}}/day</div>
                   <div class="new_check">
-                    <input id="Personal Accident Protection" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="price.pap">
+                    <input id="PersonalAccidentProtection" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="price.pap">
                   </div>
                 </li>
                 <li class="new_item">
                   <div></div>
-                  <div class="new_label">Supplemental Liability Insurance</div>
+                  <label for="Supplemental Liability Insurance">Supplemental Liability Insurance</label>
                   <div class="new_price">${{price.sli | number:'1.2-2'}}/day</div>
                   <div class="new_check">
                     <input id="Supplemental Liability Insurance" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="price.sli">
@@ -108,8 +108,7 @@
                 </li>
                 <li class="new_item">
                   <div></div>
-                  <div class="new_label">
-                    Extended Roadside Protection</div>
+                  <label for="Extended Roadside Protection">Extended Roadside Protection</label>
                   <div class="new_price">${{price.erp | number:'1.2-2'}}/day</div>
                   <div class="new_check">
                     <input id="Extended Roadside Protection" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="price.erp">
