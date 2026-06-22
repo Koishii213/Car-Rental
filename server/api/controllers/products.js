@@ -182,11 +182,6 @@ module.exports.createCar =function (req, res) {
 };
 
 module.exports.deleteCarbyId = function (req, res) {
-    // Cars.delete({_id:req.params.id}, function (err) {
-    //     if(err)
-    //         return res.send(err);
-    //     console.log('Car Delelted');
-    // })
     console.log('enter delete');
     console.log(req.params.id);
     Cars.update({_id: req.params.id}, {
@@ -201,28 +196,35 @@ module.exports.deleteCarbyId = function (req, res) {
 }
 
 module.exports.updateCarInfo = function (req, res) {
-    console.log('---updateCarInfo ---');
-    console.log(req.body);
-    Cars.update({_id: req.body._id}, {
-        $set:{
-            name: req.body.name,
-            type: req.body.type,
-            imageName:req.body.imageName,
-            passengers: req.body.passengers,
-            luggage: req.body.luggage,
-            price: req.body.price,
-            ACsup:req.body.ACsup,
-            isAuto: req.body.isAuto,
-            pickupLoc: req.body.pickupLoc,
-            insurance:req.body.insurance,
-            isavailable: req.body.isavailable
-        }
-    }, function(err, affected, resp) {
-        if(err){
-            return res.send(err);
-        }
-        console.log('update success');
-        res.json({message: 'Car Updated'});
-    });
-};
 
+    if (!mongoose.Types.ObjectId.isValid(req.body._id)) {
+        return res.status(400).json({
+            message: 'Invalid car id'
+        });
+    }
+
+    const carId = mongoose.Types.ObjectId.createFromHexString(req.body._id);
+
+    Cars.update(
+        { _id: carId },
+        {
+            $set: {
+                name: req.body.name,
+                type: req.body.type,
+                imageName: req.body.imageName,
+                passengers: req.body.passengers,
+                luggage: req.body.luggage,
+                price: req.body.price,
+                ACsup: req.body.ACsup,
+                isAuto: req.body.isAuto
+            }
+        },
+        function(err, affected, resp) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json({ message: 'Car updated' });
+        }
+    );
+};
