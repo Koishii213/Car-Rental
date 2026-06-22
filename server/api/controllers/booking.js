@@ -23,9 +23,19 @@ function buildBookingData(body) {
     };
 }
 
+function isValidObjectId(id) {
+    return typeof id === 'string' && /^[a-fA-F0-9]{24}$/.test(id);
+}
+
 function updateCarAvailability(carid, callback) {
-    Car.update(
-        { _id: carid },
+    if (!isValidObjectId(carid)) {
+        return callback(new Error('Invalid car id'));
+    }
+
+    var safeCarId = new mongoose.Types.ObjectId(carid);
+
+    return Car.update(
+        { _id: safeCarId },
         {
             $set: {
                 isavailable: false
@@ -66,7 +76,7 @@ module.exports.createBooking = function createBooking(req, res) {
 
     updateCarAvailability(carid, function updateCarAvailabilityCallback(err) {
         if (err) {
-            return res.send(err);
+            return res.status(400).send(err.message);
         }
 
         return saveBooking(res, booking);
