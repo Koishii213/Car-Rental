@@ -87,7 +87,7 @@
                   <div class="new_label">Basic Insurance</div>
                   <div class="new_price">${{car.insurance | number:'1.2-2'}}/day</div>
                   <div class="new_check">
-                    <input type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="car.insurance">
+                    <input id="basic-insurance" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="car.insurance">
                   </div>
                 </li>
                 <li class="new_item">
@@ -95,7 +95,7 @@
                   <div class="new_label">Personal Accident Protection</div>
                   <div class="new_price">${{price.pap | number:'1.2-2'}}/day</div>
                   <div class="new_check">
-                    <input type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="price.pap">
+                    <input id="personal-accident" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="price.pap">
                   </div>
                 </li>
                 <li class="new_item">
@@ -103,7 +103,7 @@
                   <div class="new_label">Supplemental Liability Insurance</div>
                   <div class="new_price">${{price.sli | number:'1.2-2'}}/day</div>
                   <div class="new_check">
-                    <input type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="price.sli">
+                    <input id="supplemental-liability" type="checkbox" class="form-check-input" (change)="onchange($event)" [value]="price.sli">
                   </div>
                 </li>
                 <li class="new_item">
