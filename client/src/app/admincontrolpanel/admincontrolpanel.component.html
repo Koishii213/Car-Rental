@@ -27,7 +27,8 @@
             <form #imageForm = "ngForm" (ngSubmit)="onImageSubmit(imageForm.value)">
 
               <img [src]='imageUrl'  style="width:150px; height:100px;">
-              <input class="form-group" type="file" #Image accept="image/*"  (change)="handleFileInput($event.target.files)">
+              <label for="carImage">Car image</label>
+              <input id="carImage" class="form-group" type="file" #Imageaccept="image/*" (change)="handleFileInput(Image.files)">
               <!--<button type="submit" [disabled]="Image.value ==''" class="btn-large btn-submit">SUBMIT</button>-->
 
               <!--<div class="row">-->
