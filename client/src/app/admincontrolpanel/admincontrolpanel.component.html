@@ -30,7 +30,6 @@
               <label for="carImage">Car image</label>
               <input id="carImage" class="form-group" type="file" #Imageaccept="image/*" (change)="handleFileInput(Image.files)">
               <!--<button type="submit" [disabled]="Image.value ==''" class="btn-large btn-submit">SUBMIT</button>-->
-
               <!--<div class="row">-->
                 <!--<label for="Caption">Caption</label>-->
                 <!--<input class="form-group" type="text" #Caption ngModel name="Caption" id="Caption" required placeholder="File name">-->
@@ -46,7 +45,7 @@
           <div class="form-group" >
             <label for="name">Car name:</label>
 
-            <input type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
+            <input id="carName" type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
             <div><label for="price">Price:</label>
             <input  type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.price' name="price" placeholder="Price per day" >
 
