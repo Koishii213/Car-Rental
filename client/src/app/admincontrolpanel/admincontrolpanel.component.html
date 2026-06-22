@@ -21,9 +21,6 @@
 
           </div>
             <form #imageForm = "ngForm" (ngSubmit)="onImageSubmit(imageForm.value)">
-
-              <img [src]='imageUrl'  style="width:150px; height:100px;">
-              <input class="form-group" type="file" #Image accept="image/*"  (change)="handleFileInput($event.target.files)">
             </form>
         </div>
       </div>
@@ -34,7 +31,7 @@
           <div class="form-group" >
             <label for="name">Car name:</label>
 
-            <input type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
+            <input id="carName" type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
             <div><label for="price">Price:</label>
             <input  type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.price' name="price" placeholder="Price per day" >
 

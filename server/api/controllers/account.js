@@ -1,31 +1,31 @@
 var mongoose = require('mongoose');
 var Account = mongoose.model('Account');
 
-// var accounts = [
-//     {
-//         "id": '1',
-//         "name": "admin",
-//         "email": "a@a.com",
-//         "phone": '4699293890',
-//         "address1": "3650 Custer Pkwy",
-//         "address2": "Apt 1122",
-//         "city": "Richardson",
-//         "state": "TX",
-//         "zip": 75080
-//     },
-//     {
-//         "id": '2',
-//         "name": "admin2",
-//         "email": "txw171431@utdallas.edu",
-//         "phone": 4699293890,
-//         "address1": "3650 Custer Pkwy",
-//         "address2": "Apt 1122",
-//         "city": "Richardson",
-//         "state": "TX",
-//         "zip": 75080
-//     }
-//
-// ];
+let accounts = [
+     {
+         "id": '1',
+         "name": "admin",
+         "email": "a@a.com",
+         "phone": '4699293890',
+         "address1": "3650 Custer Pkwy",
+         "address2": "Apt 1122",
+         "city": "Richardson",
+         "state": "TX",
+         "zip": 75080
+     },
+     {
+         "id": '2',
+         "name": "admin2",
+         "email": "txw171431@utdallas.edu",
+         "phone": 4699293890,
+         "address1": "3650 Custer Pkwy",
+         "address2": "Apt 1122",
+         "city": "Richardson",
+         "state": "TX",
+         "zip": 75080
+     }
+
+ ];
 
 module.exports.accountRead = function(req, res) {
 
