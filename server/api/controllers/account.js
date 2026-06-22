@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Account = mongoose.model('Account');
 
-var accounts = [
+let accounts = [
      {
          "id": '1',
          "name": "admin",
