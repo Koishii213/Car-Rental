@@ -29,15 +29,11 @@
       <div class="col-md-10">
         <form>
           <div class="form-group" >
-            <label for="name">Car name:</label>
-
+            <label for="carName">Car name:</label>
             <input id="carName" type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
-            <div><label for="price">Price:</label>
-            <input  type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.price' name="price" placeholder="Price per day" >
-
+            <label for="price">Price per day:</label>
+            <input id="price" type="text" class="form-group col-xs-1" [(ngModel)]="formCarInfo.price" name="price" placeholder="Price per day">
             <label for="insurance">Insurance:</label>
-            <input  type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.insurance' name="insurance" placeholder="Insurance per day" >
-            </div>
           </div>
 
           <div>
