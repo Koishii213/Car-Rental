@@ -142,18 +142,18 @@
                 <input id="firstName" type="text" class="form-control" [(ngModel)]="driverinfo.firstname" name="first">
               </div>
               <div class="form-group col-md-4 second">
-                <label>Last Name:</label>
-                <input type="text" class="form-control" [(ngModel)]="driverinfo.lastname" name="last">
+                <label for="lastName">Last Name:</label>
+                <input id="lastName" type="text" class="form-control" [(ngModel)]="driverinfo.lastname" name="last">
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col-md-4">
-                <label>Email Address:</label>
-                <input type="email" class="form-control"  [(ngModel)]="driverinfo.email" name="email">
+                <label for="email">Email Address:</label>
+                <input id="email" type="email" class="form-control"  [(ngModel)]="driverinfo.email" name="email">
               </div>
               <div class="form-group col-md-4 second">
-                <label>Phone:</label>
-                <input type="text" class="form-control"  [(ngModel)]="driverinfo.phone" name="phone">
+                <label for="phone">Phone:</label>
+                <input id="phone" type="text" class="form-control"  [(ngModel)]="driverinfo.phone" name="phone">
               </div>
             </div>
           </form>
