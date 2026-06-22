@@ -60,7 +60,6 @@ import {AdminServiceService} from "./services/admin-service.service";
     PaginationComponent,
     CardComponent,
     BookingdetailComponent,
-    CardComponent,
     AdmincontrolpanelComponent,
     DeletedialogComponent
   ],
