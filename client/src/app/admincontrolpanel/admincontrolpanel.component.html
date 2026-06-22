@@ -42,74 +42,62 @@
 
       <div class="col-md-10">
         <form>
-          <div class="form-group" >
-            <label for="name">Car name:</label>
+          <div class="form-group">
+            <label for="edit-name">Car name:</label>
 
-            <input type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
-            <div><label for="price">Price:</label>
-            <input  type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.price' name="price" placeholder="Price per day" >
+            <input id="edit-name" type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
 
-            <label for="insurance">Insurance:</label>
-            <input  type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.insurance' name="insurance" placeholder="Insurance per day" >
+            <div>
+              <label for="edit-price">Price:</label>
+              <input id="edit-price" type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.price' name="price" placeholder="Price per day">
+
+              <label for="edit-insurance">Insurance:</label>
+              <input id="edit-insurance" type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.insurance' name="insurance" placeholder="Insurance per day">
             </div><!--style="display:inline"-->
           </div>
 
           <div>
-          <label for="type">Car Type</label>
-          <select name = 'type'  [(ngModel)]='formCarInfo.type' class="form-group">
-            <option value="Economy">Economy</option>
-            <option value="Compact">Compact</option>
-            <option value="Standard">Standard</option>
-            <option value="SUV">SUV</option>
-            <option value="Luxury">Luxury</option>
-
-          </select>
-
-          <label for="passengerNum">Seats</label>
-          <select name = 'passengers' [(ngModel)]='formCarInfo.passengers' class="form-group">
-            <option *ngFor="let i of [2,3,4,5,6,7]" value='{{i}}'>{{i}}</option>
-          </select>
-
-          <label for="luggage">Luggage</label>
-          <select name = 'luggage' [(ngModel)]='formCarInfo.luggage' class="form-group">
-            <option *ngFor="let i of [1,2,3,4]" value='{{i}}'>{{i}}</option>
-          </select>
-
-          <label for="isAuto">Auto</label>
-          <select [(ngModel)]='formCarInfo.isAuto' name = 'isAuto' class="form-group">
-            <option value = 'true' [selected]="{true:formCarInfo.isAuto == true, false: formCarInfo.isAuto == false}">YES</option>
-            <option value="false" [selected]="{true:formCarInfo.isAuto == true, false: formCarInfo.isAuto == false}">NO</option>
-          </select>
-
-            <label for="ACsup">A/C</label>
-            <select [(ngModel)]='formCarInfo.ACsup' name = 'ACsup' class="form-group">
-              <option value = 'true' [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">YES</option>
-              <option value="false" [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">NO</option>
+            <label for="edit-type">Car Type</label>
+            <select id="edit-type" name='type' [(ngModel)]='formCarInfo.type' class="form-group">
+              <option value="Economy">Economy</option>
+              <option value="Compact">Compact</option>
+              <option value="Standard">Standard</option>
+              <option value="SUV">SUV</option>
+              <option value="Luxury">Luxury</option>
             </select>
 
-          <!--<label for="ACsup">A/C</label>-->
-          <!--<select (change)="setACsup($event)" name = 'ACsup' class="form-group">-->
-            <!--<option *ngFor="let i of ['YES', 'NO']" value="{{i}}" [selected]="{true:formCarInfo.ACsup == true && i == 'YES', false:formCarInfo.ACsup == false && i == 'NO'}">{{i}}</option>-->
-          <!--</select>-->
+            <label for="edit-passengers">Seats</label>
+            <select id="edit-passengers" name='passengers' [(ngModel)]='formCarInfo.passengers' class="form-group">
+              <option *ngFor="let i of [2,3,4,5,6,7]" value='{{i}}'>{{i}}</option>
+            </select>
 
+            <label for="edit-luggage">Luggage</label>
+            <select id="edit-luggage" name='luggage' [(ngModel)]='formCarInfo.luggage' class="form-group">
+              <option *ngFor="let i of [1,2,3,4]" value='{{i}}'>{{i}}</option>
+            </select>
+
+            <label for="edit-isAuto">Auto</label>
+            <select id="edit-isAuto" [(ngModel)]='formCarInfo.isAuto' name='isAuto' class="form-group">
+              <option value='true' [selected]="{true:formCarInfo.isAuto == true, false: formCarInfo.isAuto == false}">YES</option>
+              <option value="false" [selected]="{true:formCarInfo.isAuto == true, false: formCarInfo.isAuto == false}">NO</option>
+            </select>
+
+            <label for="edit-ACsup">A/C</label>
+            <select id="edit-ACsup" [(ngModel)]='formCarInfo.ACsup' name='ACsup' class="form-group">
+              <option value='true' [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">YES</option>
+              <option value="false" [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">NO</option>
+            </select>
           </div>
-
-          <!--pickupLoc:String,-->
-          <!--insurance:Number,-->
-          <!--imageName:String,-->
-
 
           <div class="form-group">
-            <label for="pickupLoc">Location:</label>
-            <input type="text"  [(ngModel)]='formCarInfo.pickupLoc'  class="form-control" name="pickupLoc" placeholder="Pick Up Location" >
+            <label for="edit-pickupLoc">Location:</label>
+            <input id="edit-pickupLoc" type="text" [(ngModel)]='formCarInfo.pickupLoc' class="form-control" name="pickupLoc" placeholder="Pick Up Location">
           </div>
-
 
           <div class='updateconfirm'>
             <button (click)="confirmUpdateCarInfo()" class="btn btn-warning">SAVE</button>
             <button (click)='closeDialog()' class="btn btn-warning">CANCEL</button>
           </div>
-
         </form>
       </div>
     </div>
@@ -146,74 +134,61 @@
 
       <div class="col-md-10">
         <form>
-          <div class="form-group" >
-            <label for="name">Car name:</label>
+          <div class="form-group">
+            <label for="add-name">Car name:</label>
 
-            <input type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
-            <label for="price">Price:</label>
-            <input  type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.price' name="price" placeholder="Price per day" >
+            <input id="add-name" type="text" [(ngModel)]='formCarInfo.name' class="form-group col-xs-2" name="name" placeholder="Enter car name" required>
 
-            <label for="insurance">Insurance:</label>
-            <input  type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.insurance' name="insurance" placeholder="Insurance per day" >
+            <label for="add-price">Price:</label>
+            <input id="add-price" type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.price' name="price" placeholder="Price per day">
+
+            <label for="add-insurance">Insurance:</label>
+            <input id="add-insurance" type="text" class="form-group col-xs-1" [(ngModel)]='formCarInfo.insurance' name="insurance" placeholder="Insurance per day">
             <!--style="display:inline"-->
           </div>
 
           <div>
-            <label for="type">Car Type</label>
-            <select name = 'type'  [(ngModel)]='formCarInfo.type' class="form-group">
+            <label for="add-type">Car Type</label>
+            <select id="add-type" name='type' [(ngModel)]='formCarInfo.type' class="form-group">
               <option value="Economy">Economy</option>
               <option value="Compact">Compact</option>
               <option value="Standard">Standard</option>
               <option value="SUV">SUV</option>
               <option value="Luxury">Luxury</option>
-
             </select>
 
-            <label for="passengerNum">Seats</label>
-            <select name = 'passengers' [(ngModel)]='formCarInfo.passengers' class="form-group">
+            <label for="add-passengers">Seats</label>
+            <select id="add-passengers" name='passengers' [(ngModel)]='formCarInfo.passengers' class="form-group">
               <option *ngFor="let i of [2,3,4,5,6,7]" value='{{i}}'>{{i}}</option>
             </select>
 
-            <label for="luggage">Luggage</label>
-            <select name = 'luggage' [(ngModel)]='formCarInfo.luggage' class="form-group">
+            <label for="add-luggage">Luggage</label>
+            <select id="add-luggage" name='luggage' [(ngModel)]='formCarInfo.luggage' class="form-group">
               <option *ngFor="let i of [1,2,3,4]" value='{{i}}'>{{i}}</option>
             </select>
 
-            <label for="isAuto">Auto</label>
-            <select [(ngModel)]='formCarInfo.isAuto' name = 'isAuto' class="form-group">
-              <option value = 'true' [selected]="{true:formCarInfo.isAuto == true, false: formCarInfo.isAuto == false}">YES</option>
+            <label for="add-isAuto">Auto</label>
+            <select id="add-isAuto" [(ngModel)]='formCarInfo.isAuto' name='isAuto' class="form-group">
+              <option value='true' [selected]="{true:formCarInfo.isAuto == true, false: formCarInfo.isAuto == false}">YES</option>
               <option value="false" [selected]="{true:formCarInfo.isAuto == true, false: formCarInfo.isAuto == false}">NO</option>
             </select>
 
-            <label for="ACsup">A/C</label>
-            <select [(ngModel)]='formCarInfo.ACsup' name = 'ACsup' class="form-group">
-              <option value = 'true' [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">YES</option>
+            <label for="add-ACsup">A/C</label>
+            <select id="add-ACsup" [(ngModel)]='formCarInfo.ACsup' name='ACsup' class="form-group">
+              <option value='true' [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">YES</option>
               <option value="false" [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">NO</option>
             </select>
-
-            <!--<label for="ACsup">A/C</label>-->
-            <!--<select (change)="setACsup($event)" name = 'ACsup' class="form-group">-->
-            <!--<option *ngFor="let i of ['YES', 'NO']" value="{{i}}" [selected]="{true:formCarInfo.ACsup == true && i == 'YES', false:formCarInfo.ACsup == false && i == 'NO'}">{{i}}</option>-->
-            <!--</select>-->
-
           </div>
-
-          <!--pickupLoc:String,-->
-          <!--insurance:Number,-->
-          <!--imageName:String,-->
-
 
           <div class="form-group">
-            <label for="pickupLoc">Location:</label>
-            <input type="text"  [(ngModel)]='formCarInfo.pickupLoc'  class="form-control" name="pickupLoc" required placeholder="Pick Up Location" >
+            <label for="add-pickupLoc">Location:</label>
+            <input id="add-pickupLoc" type="text" [(ngModel)]='formCarInfo.pickupLoc' class="form-control" name="pickupLoc" required placeholder="Pick Up Location">
           </div>
-
 
           <div class='addconfirm'>
             <button (click)="clickToAddCar()" class="btn btn-warning">SAVE</button>
             <button (click)='closeDialog()' class="btn btn-warning">CANCEL</button>
           </div>
-
         </form>
       </div>
     </div>
