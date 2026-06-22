@@ -73,14 +73,22 @@ module.exports.updateaccountByEmail = function (req,res){
     })
 }
 
-module.exports.createaccount = function (req, res) {
-    var account = new Account(req.body);
+module.exports.createaccount = function (req, res){
+    const accountData ={
+        "name": req.body.name,
+        "email": req.body.email,
+        "phone": req.body.phone,
+        "address1": req.body.address1,
+        "address2": req.body.address2,
+        "city": req.body.city,
+        "state": req.body.state,
+        "zip": req.body.zip,
+    }
 
-    account.save(function (err) {
-        if(err){
+    const account = new Account(accountData);
+    account.save(function (err,) {
+        if (err)
             return res.send(err);
-        }
-
-        res.json({message: 'Account created'})
+        res.json({message: "Account created successfully."});
     })
-};
+}
