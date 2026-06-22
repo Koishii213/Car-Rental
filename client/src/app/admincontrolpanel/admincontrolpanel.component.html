@@ -156,7 +156,9 @@
               <option value = 'true' [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">YES</option>
               <option value="false" [selected]="{true:formCarInfo.ACsup == true, false: formCarInfo.ACsup == false}">NO</option>
             </select>
-            </div>
+
+          </div>
+
           <div class="form-group">
             <label for="pickupLoc">Location:</label>
             <input type="text"  [(ngModel)]='formCarInfo.pickupLoc'  class="form-control" name="pickupLoc" required placeholder="Pick Up Location" >
