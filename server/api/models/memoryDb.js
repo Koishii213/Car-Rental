@@ -188,72 +188,64 @@ module.exports.install = function(mongoose) {
   };
 };
 
-module.exports.seedCars = function() {
+var DEFAULT_CAR = {
+  passengers: 5,
+  luggage: 2,
+  price: 40.00,
+  ACsup: true,
+  isAuto: true,
+  isavailable: true,
+  insurance: 10.00
+};
+
+function createCar(data) {
+  return Object.assign({}, DEFAULT_CAR, data);
+}
+
+module.exports.seedCars = function seedCars() {
   seedIfNeeded('Cars', [
-    {
+    createCar({
       name: 'Nissan Altima',
       type: 'Standard',
       imageName: '/assets/carimages/nissan_altima_standard_brl_287x164.jpg',
-      passengers: 5,
-      luggage: 2,
-      price: 40.00,
-      ACsup: true,
-      isAuto: true,
-      pickupLoc: 'DALLAS LOVE FIELD - Dallas Love Field',
-      isavailable: true,
-      insurance: 10.00
-    },
-    {
+      pickupLoc: 'DALLAS LOVE FIELD - Dallas Love Field'
+    }),
+
+    createCar({
       name: 'Chevrolet Sonica',
       type: 'Economy',
       imageName: '/assets/carimages/chevrolet_sonic_economy_brl_287x164.jpg',
-      passengers: 5,
-      luggage: 2,
-      price: 40.00,
-      ACsup: true,
-      isAuto: true,
-      pickupLoc: 'Plano high school',
-      isavailable: true,
-      insurance: 10.00
-    },
-    {
+      pickupLoc: 'Plano high school'
+    }),
+
+    createCar({
       name: 'Chevrolet Cruze',
       type: 'Standard',
       imageName: '/assets/carimages/chevrolet_cruze_intermediate_brl_287x164.jpg',
-      passengers: 5,
-      luggage: 2,
       price: 60.00,
-      ACsup: true,
-      isAuto: true,
       pickupLoc: 'Richardison Bell street',
-      isavailable: true,
       insurance: 12.00
-    },
-    {
+    }),
+
+    createCar({
       name: 'Chevrolet Suburban',
       type: 'SUV',
       imageName: '/assets/carimages/chevrolet_suburban_suv_brl_287x164.jpg',
       passengers: 7,
       luggage: 3,
       price: 120.00,
-      ACsup: true,
-      isAuto: true,
       pickupLoc: 'UTD',
-      isavailable: true,
       insurance: 20.00
-    },
-    {
+    }),
+
+    createCar({
       name: 'Hrysler_300',
       type: 'Luxury',
       imageName: '/assets/carimages/chrysler_300_luxury_brl_287x164.jpg',
-      passengers: 5,
       luggage: 3,
       price: 210.00,
-      ACsup: true,
-      isAuto: true,
       pickupLoc: 'UTD',
-      isavailable: true,
       insurance: 30.00
-    }
+    })
   ]);
 };
