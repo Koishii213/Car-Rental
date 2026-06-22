@@ -77,36 +77,6 @@ CARS = [
         insurance:30.00
     }
 ];
-// router.get('/', function(req, res) {
-//     // var collection = db.get('videos');
-//     // collection.find({}, function(err, videos){
-//     //     if (err) throw err;
-//     //     res.json(videos);
-//     // });
-//
-//
-//     // res.send(carlists);
-//     res.send(carlists);
-// });
-
-
-// module.exports.getCarLists = function(req, res) {
-//     // var collection = db.get('videos');
-//     // collection.find({}, function(err, videos){
-//     //     if (err) throw err;
-//     //     res.json(videos);
-//     // });
-//
-//     // res.send(carlists);
-//     // if (!req.payload._id) {
-//     //     res.status(401).json({
-//     //         "message" : "UnauthorizedError: private profile"
-//     //     });
-//     // } else {
-//     //
-//     // }
-//     res.json(CARS);
-// };
 
 module.exports.readAllCarInfo = function(req, res) {
 
@@ -173,24 +143,6 @@ module.exports.searchCarProduct = function(req, res) {
 
     });
 };
-
-//search car info by filter conditions
-// module.exports.searchCarwithFilter = function(req, res) {
-//     console.log("filter-----");
-//     var loc=req.params.pickupLoc;
-//     var types=req.params.carType;
-//     var cartypes=types.split(",");
-//     var psgnum=req.params.passNum;
-//     var primax=req.params.priceMax;
-//     var primin=req.params.priceMin;
-//     Cars.find({pickupLoc:{$regex:loc,$options:'i'},price:{"$gte":primin,"$lte":primax},passengers:{$lte:psgnum}},function (err, cars){
-//         if(err)
-//             res.send(err);
-//         //console.log(cars.length);
-//         res.json(cars);
-//
-//     });
-// };
 
 module.exports.searchCarwithFilter = function(req, res) {
     console.log("filter-----");
