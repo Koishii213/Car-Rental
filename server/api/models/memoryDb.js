@@ -8,10 +8,7 @@ function clone(value) {
 }
 
 function makeId() {
-  if (crypto.randomBytes) {
-    return crypto.randomBytes(12).toString('hex');
-  }
-  return String(Date.now()) + String(Math.random()).slice(2);
+  return crypto.randomBytes(12).toString('hex');
 }
 
 function normalizeValue(value) {
