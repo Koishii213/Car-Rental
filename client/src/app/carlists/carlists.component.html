@@ -1,58 +1,72 @@
-<<div class="layout">
-  <!-- Content here -->
-  <!--<p>Car Information</p>-->
-  <!--<button (click)="getCarlists()" >REQ</button>-->
-  <!--<button (click)="postCarInfo()" >post</button>-->
+<div class="layout">
 
   <div class="adminpanel">
     <br>
+
     <app-admincontrolpanel
       *ngIf="isAdmin"
       (getAll)="getCarlists()"
       [seletedCar]="selectedCar_p">
     </app-admincontrolpanel>
+
     <br>
   </div>
 
   <div class="maintenance-buttons">
     <button type="button" (click)="getCarlists()">
-      Show all cars
+      Mostrar todos os veículos
     </button>
 
     <button type="button" (click)="showCarsInMaintenance()">
-      Show cars in maintenance
+      Mostrar veículos em manutenção
     </button>
   </div>
 
-  <div *ngIf="showCards">
+  <div *ngIf="loading">
+    <p>Carregando veículos...</p>
+  </div>
+
+  <div *ngIf="!loading && total === 0">
+    <p>Nenhum veículo disponível foi encontrado para essa cidade/localização.</p>
+  </div>
+
+  <div *ngIf="showCards && !loading && total > 0">
 
     <ul *ngFor="let car of showinglist; let i = index">
-      <li tabindex="0" role="button" [ngClass]="{'highlight' : selected == i, 'not-highlight' : selected != i}" (click)="car.isavailable && onSelect(i)" (keydown.enter)="car.isavailable && onSelect(i)"
+      <li
+        tabindex="0"
+        role="button"
+        [ngClass]="{'highlight': selected == i, 'not-highlight': selected != i}"
+        (click)="car.isavailable && onSelect(i)"
+        (keydown.enter)="car.isavailable && onSelect(i)"
         (keydown.space)="car.isavailable && onSelect(i)">
+
         <app-card
           [car]="car"
           [favorites]="favorites">
         </app-card>
+
         <button
           type="button"
           *ngIf="!isCarInMaintenance(car)"
-          (click)="$event.stopPropagation(); addCarToMaintenance(car)"
-        >
-          Add to maintenance
+          (click)="$event.stopPropagation(); addCarToMaintenance(car)">
+          Adicionar à manutenção
         </button>
 
         <button
           type="button"
           *ngIf="isCarInMaintenance(car)"
-          (click)="$event.stopPropagation(); removeCarFromMaintenance(car)"
-        >
-          Remove from maintenance
+          (click)="$event.stopPropagation(); removeCarFromMaintenance(car)">
+          Remover da manutenção
         </button>
+
       </li>
     </ul>
+
   </div>
 
   <app-pagination
+    *ngIf="!loading && total > 0"
     (goPage)="goToPage($event)"
     (goNext)="onNext()"
     (goPrev)="onPrev()"
@@ -61,4 +75,5 @@
     [perPage]="limit"
     [count]="total">
   </app-pagination>
+
 </div>

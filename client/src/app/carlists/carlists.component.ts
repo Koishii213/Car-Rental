@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProductService } from "../services/product.service";
-import { Car } from "../class/car";
-import { AuthenticationService } from "../services/authentication.service";
-import { favorite, FavoritelistService } from "../services/favoritelist.service";
-import { NewFilterOptions } from "../home/home.component";
+
+import { ProductService } from '../services/product.service';
+import { Car } from '../class/car';
+import { AuthenticationService } from '../services/authentication.service';
+import { favorite, FavoritelistService } from '../services/favoritelist.service';
+import { NewFilterOptions } from '../home/home.component';
 
 @Component({
   selector: 'app-carlists',
@@ -12,54 +13,63 @@ import { NewFilterOptions } from "../home/home.component";
 })
 export class CarlistsComponent implements OnInit {
 
-  selected: number = -1;
-  isAdmin: boolean = true;
-  showCards: boolean = true;
+  public selected: number = -1;
+  public isAdmin: boolean = false;
+  public showCards: boolean = true;
 
-  loading = false;
-  total = 0;
-  page = 1;
-  limit = 4;
+  public loading: boolean = false;
+  public total: number = 0;
+  public page: number = 1;
+  public limit: number = 4;
 
-  cars: Car[];
-  showinglist: Car[];
-  favorites: favorite[];
-  selectedCar_p: Car;
+  public cars: Car[] = [];
+  public showinglist: Car[] = [];
+  public favorites: favorite[] = [];
+  public selectedCar_p: Car | null = null;
 
-  searchCars: Car[];
+  public searchCars: Car[] = [];
+  public maintenanceCars: Car[] = [];
 
-  maintenanceCars: Car[] = [];
+  @Input() public pickPlace: string = '';
 
-  @Input() public pickPlace: string;
-  public newOptions: NewFilterOptions;
+  public newOptions: NewFilterOptions | null = null;
 
   constructor(
     private carService: ProductService,
     private favoriteservice: FavoritelistService,
     private auth: AuthenticationService
-  ) {
+  ) { }
+
+  ngOnInit() {
+    this.isAdmin = this.auth.Ifadmin();
+
     if (this.auth.isLoggedIn()) {
       this.favoriteservice.getFavoritesByEmail(this.auth.getUserDetails().email).subscribe(
         (data: any) => {
           this.favorites = data;
         },
         (err) => {
-          console.log(err);
+          console.log('Erro ao carregar favoritos.');
         }
       );
     }
-  }
 
-  ngOnInit() {
-    console.log("carlist recieved!!~~");
-
-    this.searchCarlists();
-    this.isAdmin = this.auth.Ifadmin();
+    if (this.pickPlace && this.pickPlace.trim() !== '') {
+      this.searchCarlists();
+    } else {
+      this.getCarlists();
+    }
   }
 
   footerRunLoc(pickplace: string) {
     this.pickPlace = pickplace;
-    this.searchCarlists();
+
+    if (this.pickPlace && this.pickPlace.trim() !== '') {
+      this.pickPlace = this.pickPlace.trim();
+      this.searchCarlists();
+    } else {
+      this.getCarlists();
+    }
   }
 
   footerRunAll() {
@@ -72,69 +82,75 @@ export class CarlistsComponent implements OnInit {
   }
 
   searchCarFilter() {
+    if (!this.newOptions) {
+      return;
+    }
+
     this.loading = true;
-    console.log(this.newOptions);
 
-    this.carService.searchCarwithFilter(this.newOptions).subscribe(res => {
-      this.cars = res;
-      this.total = res.length;
-      this.showinglist = this.cars.slice(0, this.limit);
-      this.page = 1;
-
-      this.selected = -1;
-      this.selectedCar_p = null;
-
-      this.loading = false;
-    }, error1 => {
-      console.log("search error!!!!!!");
-      this.loading = false;
-    });
+    this.carService.searchCarwithFilter(this.newOptions).subscribe(
+      (res: Car[]) => {
+        this.updateCarList(res);
+        this.loading = false;
+      },
+      (error1) => {
+        console.log('Erro ao buscar veículos com filtro.');
+        this.loading = false;
+      }
+    );
   }
 
   searchCarlists() {
+    if (!this.pickPlace || this.pickPlace.trim() === '') {
+      this.getCarlists();
+      return;
+    }
+
     this.loading = true;
 
-    this.carService.searchCarProduct(this.pickPlace).subscribe(res => {
-      this.cars = res;
-      this.total = res.length;
-      this.showinglist = this.cars.slice(0, this.limit);
-      this.page = 1;
-
-      this.selected = -1;
-      this.selectedCar_p = null;
-
-      this.loading = false;
-    }, error1 => {
-      console.log("search error!!!!!!");
-      this.loading = false;
-    });
+    this.carService.searchCarProduct(this.pickPlace).subscribe(
+      (res: Car[]) => {
+        this.updateCarList(res);
+        this.loading = false;
+      },
+      (error1) => {
+        console.log('Erro ao buscar veículos por cidade.');
+        this.loading = false;
+      }
+    );
   }
 
   getCarlists() {
-    console.log('--get all cars-');
     this.loading = true;
 
-    this.carService.getAllProduct().subscribe(res => {
-      this.cars = res;
-      this.total = res.length;
-      this.showinglist = this.cars.slice(0, this.limit);
-      this.page = 1;
+    this.carService.getAllProduct().subscribe(
+      (res: Car[]) => {
+        this.updateCarList(res);
+        this.loading = false;
+      },
+      (error1) => {
+        console.log('Erro ao carregar lista de veículos.');
+        this.loading = false;
+      }
+    );
+  }
 
-      this.selected = -1;
-      this.selectedCar_p = null;
-
-      this.loading = false;
-    });
+  private updateCarList(carList: Car[]) {
+    this.cars = carList || [];
+    this.total = this.cars.length;
+    this.page = 1;
+    this.selected = -1;
+    this.selectedCar_p = null;
+    this.showinglist = this.cars.slice(0, this.limit);
   }
 
   addCarToMaintenance(car: Car) {
-    const alreadyInMaintenance = this.maintenanceCars.some(
+    var alreadyInMaintenance = this.maintenanceCars.some(
       (item: any) => item._id === (car as any)._id
     );
 
     if (!alreadyInMaintenance) {
       this.maintenanceCars.push(car);
-      console.log("Car added to maintenance:", car);
     }
   }
 
@@ -142,17 +158,15 @@ export class CarlistsComponent implements OnInit {
     this.maintenanceCars = this.maintenanceCars.filter(
       (item: any) => item._id !== (car as any)._id
     );
-
-    console.log("Car removed from maintenance:", car);
   }
 
   showCarsInMaintenance() {
-    this.showinglist = this.maintenanceCars.slice(0, this.limit);
-
+    this.cars = this.maintenanceCars;
     this.total = this.maintenanceCars.length;
     this.page = 1;
     this.selected = -1;
     this.selectedCar_p = null;
+    this.showinglist = this.maintenanceCars.slice(0, this.limit);
   }
 
   isCarInMaintenance(car: Car): boolean {
@@ -161,11 +175,10 @@ export class CarlistsComponent implements OnInit {
     );
   }
 
-  onSelect(e) {
-    if (e != this.selected) {
+  onSelect(e: number) {
+    if (e !== this.selected) {
       this.selected = e;
       this.selectedCar_p = this.showinglist[e];
-      console.log("index:" + e + " _id:" + this.showinglist[e]._id);
     } else {
       this.selected = -1;
       this.selectedCar_p = null;
@@ -173,11 +186,11 @@ export class CarlistsComponent implements OnInit {
   }
 
   getFrom(): number {
-    return ((this.limit * this.page) - this.limit);
+    return (this.limit * this.page) - this.limit;
   }
 
   getTo(): number {
-    let max = this.limit * this.page;
+    var max = this.limit * this.page;
 
     if (max > this.total) {
       max = this.total;
@@ -187,7 +200,7 @@ export class CarlistsComponent implements OnInit {
   }
 
   goToPage(n: number): void {
-    if (this.page != n) {
+    if (this.page !== n) {
       this.selected = -1;
       this.selectedCar_p = null;
       this.page = n;
@@ -196,18 +209,20 @@ export class CarlistsComponent implements OnInit {
   }
 
   onNext(): void {
-    this.page++;
-
-    this.selected = -1;
-    this.selectedCar_p = null;
-    this.showinglist = this.cars.slice(this.getFrom(), this.getTo());
+    if (this.getTo() < this.total) {
+      this.page++;
+      this.selected = -1;
+      this.selectedCar_p = null;
+      this.showinglist = this.cars.slice(this.getFrom(), this.getTo());
+    }
   }
 
   onPrev(): void {
-    this.page--;
-
-    this.selected = -1;
-    this.selectedCar_p = null;
-    this.showinglist = this.cars.slice(this.getFrom(), this.getTo());
+    if (this.page > 1) {
+      this.page--;
+      this.selected = -1;
+      this.selectedCar_p = null;
+      this.showinglist = this.cars.slice(this.getFrom(), this.getTo());
+    }
   }
 }
