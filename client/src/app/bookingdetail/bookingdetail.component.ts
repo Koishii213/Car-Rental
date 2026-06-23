@@ -18,9 +18,9 @@ export class BookingdetailComponent implements OnInit {
     email:'',
     phone:''
   };
-  // price:pricedetail = new pricedetail(3,26.99,5.49,8.96,6.99,48.09,64.28, 0);
-  price:pricedetail;
-  //pricepayload:pricedetail = new pricedetail(3,26.99,5.49,8.96,6.99,48.09,64.28, 591.32);
+  // price:Pricedetail = new Pricedetail(3,26.99,5.49,8.96,6.99,48.09,64.28, 0);
+  price:Pricedetail;
+  //pricepayload:Pricedetail = new Pricedetail(3,26.99,5.49,8.96,6.99,48.09,64.28, 591.32);
   booking:Booking = new Booking('2018-01-01','2018-01-02','DFW','DFW',0,'1','a@a.com',this.driverinfo);
 
   car:Car;
@@ -30,7 +30,7 @@ export class BookingdetailComponent implements OnInit {
   constructor(private bookingservice:BookingsService,private router: Router, private dataBus:DataBusService, private auth:AuthenticationService) {
       this.car = this.dataBus.getCarInfo();
 
-      this.price = new pricedetail(3,26.99,5.49,8.96,6.99,48.09,64.28, 0);
+      this.price = new Pricedetail(3,26.99,5.49,8.96,6.99,48.09,64.28, 0);
       this.price.base = this.car.price;
       this.price.total = this.price.base * this.price.day + this.price.tax;
 
@@ -112,7 +112,7 @@ export class BookingdetailComponent implements OnInit {
 }
 
 
-export class pricedetail{
+export class Pricedetail{
   day:number;
   loss:number;
   pap:number;
