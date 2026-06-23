@@ -3,12 +3,14 @@ var express = require('express');
 var mongoose = require('mongoose');
 var Cars = mongoose.model('Cars');
 
-
 var router = express.Router();
 
 // var monk = require('monk');
 // var db = monk('localhost:27017/vidzy');
 
+function escapeRegex(text) {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 CARS = [
     {
@@ -18,11 +20,11 @@ CARS = [
         passengers: 5,
         luggage: 2,
         price: 40.00,
-        ACsup:true,
+        ACsup: true,
         isAuto: true,
-        pickupLoc: 'DALLAS LOVE FIELD - Dallas Love Field',
-        isavailable:true,
-        insurance:10.00
+        pickupLoc: 'Russas',
+        isavailable: true,
+        insurance: 10.00
     },
     {
         name: 'Chevrolet Sonica',
@@ -31,11 +33,11 @@ CARS = [
         passengers: 5,
         luggage: 2,
         price: 40.00,
-        ACsup:true,
+        ACsup: true,
         isAuto: true,
-        pickupLoc: 'Plano high school',
-        isavailable:true,
-        insurance:10.00
+        pickupLoc: 'Fortaleza',
+        isavailable: true,
+        insurance: 10.00
     },
     {
         name: 'Chevrolet Cruze',
@@ -44,11 +46,11 @@ CARS = [
         passengers: 5,
         luggage: 2,
         price: 60.00,
-        ACsup:true,
+        ACsup: true,
         isAuto: true,
-        pickupLoc: 'Richardison Bell street',
-        isavailable:true,
-        insurance:12.00
+        pickupLoc: 'Jaguaruana',
+        isavailable: true,
+        insurance: 12.00
     },
     {
         name: 'Chevrolet Suburban',
@@ -57,11 +59,11 @@ CARS = [
         passengers: 7,
         luggage: 3,
         price: 120.00,
-        ACsup:true,
+        ACsup: true,
         isAuto: true,
-        pickupLoc: 'UTD',
-        isavailable:true,
-        insurance:20.00
+        pickupLoc: 'Limoeiro do Norte',
+        isavailable: true,
+        insurance: 20.00
     },
     {
         name: 'Hrysler_300',
@@ -70,43 +72,49 @@ CARS = [
         passengers: 5,
         luggage: 3,
         price: 210.00,
-        ACsup:true,
+        ACsup: true,
         isAuto: true,
-        pickupLoc: 'UTD',
-        isavailable:true,
-        insurance:30.00
+        pickupLoc: 'Russas',
+        isavailable: true,
+        insurance: 30.00
     }
 ];
 
 module.exports.readAllCarInfo = function(req, res) {
 
     Cars.find(function (err, carList) {
-        if (err)
-            res.send(err);
+        if (err) {
+            return res.send(err);
+        }
+
         res.json(carList);
     });
 
 };
+
 module.exports.postCarInfor = function(req, res) {
-    res.json({message: 'Requisicao recebida'});
+    res.json({ message: 'Requisicao recebida' });
 };
 
 module.exports.createCarContext = function (req, res) {
     console.log("criando dados iniciais dos carros");
 
     var pending = CARS.length;
+
     if (!pending) {
         return module.exports.readAllCarInfo(req, res);
     }
 
     CARS.forEach(function(item) {
         var carInfor = new Cars(item);
+
         carInfor.save(function (err) {
             if (err) {
                 return res.send(err);
             }
 
             pending--;
+
             if (pending === 0) {
                 module.exports.readAllCarInfo(req, res);
             }
@@ -114,86 +122,135 @@ module.exports.createCarContext = function (req, res) {
     });
 };
 
-module.exports.carsReadByName = function (req,res) {
-    Cars.findOne({name:"Nissan Altima"}, function (err, cars) {
-        if (err)
-            res.send(err);
+module.exports.carsReadByName = function (req, res) {
+    Cars.findOne({ name: "Nissan Altima" }, function (err, cars) {
+        if (err) {
+            return res.send(err);
+        }
+
         res.json(cars);
     });
 };
 
-//search car info by id
+// search car info by id
 module.exports.searchCarbyID = function(req, res) {
-    Cars.findOne({_id:req.params.id},function (err, car){
-        if(err)
-            res.send(err);
-        res.json(car);
+    Cars.findOne({ _id: req.params.id }, function (err, car) {
+        if (err) {
+            return res.send(err);
+        }
 
+        res.json(car);
     });
 };
 
-//search car info by pick up locations
+// search car info by pick up location / city
 module.exports.searchCarProduct = function(req, res) {
-    var key=req.params.pickupLoc;
-    Cars.find({pickupLoc:{$regex:key,$options:'i'}},function (err, cars){
-        if(err)
-            res.send(err);
-        //console.log(cars);
-        res.json(cars);
+    var key = req.params.pickupLoc;
 
+    var query = {
+        pickupLoc: {
+            $regex: escapeRegex(key),
+            $options: 'i'
+        },
+        isavailable: true
+    };
+
+    Cars.find(query, function (err, cars) {
+        if (err) {
+            return res.send(err);
+        }
+
+        res.json(cars);
     });
 };
 
 module.exports.searchCarwithFilter = function(req, res) {
     console.log("filter-----");
-    var loc=req.params.pickupLoc;
-    var types=req.params.carType;
-    var cartypes=types.split(",");
-    var psgnum=req.params.passNum;
-    var primax=req.params.priceMax;
-    var primin=req.params.priceMin;
-    if(loc=="AllTypes"){
-        Cars.find({price:{"$gte":primin,"$lte":primax},type:{$in:cartypes},passengers:{$lte:psgnum}},function (err, cars){
-            if(err)
-                res.send(err);
-            res.json(cars);
-        });
-    }
-    else{
-        var cartypes=types.split(",");
-        Cars.find({pickupLoc:{$regex:loc,$options:'i'},price:{"$gte":primin,"$lte":primax},type:{$in:cartypes},passengers:{$lte:psgnum}},function (err, cars){
-            if(err)
-                res.send(err);
-            res.json(cars);
-        });
+
+    var loc = req.params.pickupLoc;
+    var types = req.params.carType;
+    var cartypes = types.split(",");
+    var psgnum = Number(req.params.passNum);
+    var primax = Number(req.params.priceMax);
+    var primin = Number(req.params.priceMin);
+
+    var query = {
+        price: {
+            "$gte": primin,
+            "$lte": primax
+        },
+        type: {
+            $in: cartypes
+        },
+        passengers: {
+            $lte: psgnum
+        },
+        isavailable: true
+    };
+
+    if (loc !== "AllTypes") {
+        query.pickupLoc = {
+            $regex: escapeRegex(loc),
+            $options: 'i'
+        };
     }
 
-};
-
-module.exports.createCar =function (req, res) {
-    var car = new Cars(req.body);
-    car.save(function (err) {
-        if(err){
+    Cars.find(query, function (err, cars) {
+        if (err) {
             return res.send(err);
         }
+
+        res.json(cars);
+    });
+};
+
+module.exports.createCar = function (req, res) {
+    var carData = {
+        name: req.body.name,
+        type: req.body.type,
+        imageName: req.body.imageName,
+        passengers: req.body.passengers,
+        luggage: req.body.luggage,
+        price: req.body.price,
+        ACsup: req.body.ACsup,
+        isAuto: req.body.isAuto,
+        pickupLoc: req.body.pickupLoc,
+        isavailable: req.body.isavailable !== undefined ? req.body.isavailable : true,
+        insurance: req.body.insurance
+    };
+
+    var car = new Cars(carData);
+
+    car.save(function (err) {
+        if (err) {
+            return res.send(err);
+        }
+
         console.log('Car Created');
-        res.json({message: 'Car Created', car: car});
+        res.json({ message: 'Car Created', car: car });
     });
 };
 
 module.exports.deleteCarbyId = function (req, res) {
     console.log('enter delete');
     console.log(req.params.id);
-    Cars.update({_id: req.params.id}, {
-        $set:{isavailable: false}
-        }, function(err, affected, resp) {
-        if(err){
-            return res.send(err);
-        }
-    });
-    res.send("Delete Success!");
 
-}
+    Cars.update(
+        { _id: req.params.id },
+        {
+            $set: {
+                isavailable: false
+            }
+        },
+        function(err, affected, resp) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.send("Delete Success!");
+        }
+    );
+};
 
 module.exports.updateCarInfo = function (req, res) {
 
@@ -216,7 +273,10 @@ module.exports.updateCarInfo = function (req, res) {
                 luggage: req.body.luggage,
                 price: req.body.price,
                 ACsup: req.body.ACsup,
-                isAuto: req.body.isAuto
+                isAuto: req.body.isAuto,
+                pickupLoc: req.body.pickupLoc,
+                isavailable: req.body.isavailable,
+                insurance: req.body.insurance
             }
         },
         function(err, affected, resp) {
