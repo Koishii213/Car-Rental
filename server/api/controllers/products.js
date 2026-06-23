@@ -195,11 +195,34 @@ module.exports.searchCarwithFilter = function(req, res) {
         };
     }
 
+<<<<<<< HEAD
     Cars.find(query, function (err, cars) {
+=======
+};
+
+module.exports.createCar = function (req, res) {
+
+    const carData = {
+        name: req.body.name,
+        type: req.body.type,
+        imageName: req.body.imageName,
+        passengers: req.body.passengers,
+        luggage: req.body.luggage,
+        price: req.body.price,
+        ACsup: req.body.ACsup,
+        isAuto: req.body.isAuto,
+        isavailable: req.body.isavailable
+    };
+
+    var car = new Cars(carData);
+
+    car.save(function (err) {
+>>>>>>> 72b9b44fe0ec79af38c59dfe262488f6e2467f94
         if (err) {
             return res.send(err);
         }
 
+<<<<<<< HEAD
         res.json(cars);
     });
 };
@@ -252,6 +275,15 @@ module.exports.deleteCarbyId = function (req, res) {
     );
 };
 
+=======
+        console.log('Car Created');
+        res.json({
+            message: 'Car Created',
+            car: car
+        });
+    });
+};
+>>>>>>> 72b9b44fe0ec79af38c59dfe262488f6e2467f94
 module.exports.updateCarInfo = function (req, res) {
 
     if (!mongoose.Types.ObjectId.isValid(req.body._id)) {
