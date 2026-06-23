@@ -5,14 +5,11 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 // import { saveAs } from 'file-saver/FileSaver';
 import {observeOn} from "rxjs/operators";
 
-
 @Component({
   selector: 'app-admincontrolpanel',
   templateUrl: './admincontrolpanel.component.html',
   styleUrls: ['./admincontrolpanel.component.css']
 })
-
-
 export class AdmincontrolpanelComponent implements OnInit {
 
   @Output() private readonly getAll = new EventEmitter();
@@ -27,7 +24,10 @@ export class AdmincontrolpanelComponent implements OnInit {
   fileToUpload: File;
   formCarInfo: Car;
 
-  constructor(private productService: ProductService, private http: HttpClient) {
+  constructor(
+    private readonly productService: ProductService,
+    private readonly http: HttpClient
+  ) {
   }
 
   ngOnInit() {
