@@ -22,6 +22,7 @@ export class CarlistsComponent implements OnInit {
   public page: number = 1;
   public limit: number = 4;
 
+<<<<<<< HEAD
   public cars: Car[] = [];
   public showinglist: Car[] = [];
   public favorites: favorite[] = [];
@@ -29,6 +30,14 @@ export class CarlistsComponent implements OnInit {
 
   public searchCars: Car[] = [];
   public maintenanceCars: Car[] = [];
+=======
+  cars: Car[] = [];
+  showinglist: Car[] = [];
+  favorites: favorite[] = [];
+  selectedCar_p: Car = null;
+
+  searchCars: Car[] = [];
+>>>>>>> 0aec5b3a46ea2d49ebad68b791a05e394cc8d647
 
   @Input() public pickPlace: string = '';
 
@@ -54,11 +63,20 @@ export class CarlistsComponent implements OnInit {
       );
     }
 
+<<<<<<< HEAD
     if (this.pickPlace && this.pickPlace.trim() !== '') {
       this.searchCarlists();
     } else {
       this.getCarlists();
     }
+=======
+  ngOnInit() {
+    console.log("carlist recieved!!~~");
+
+    this.getCarlists();
+
+    this.isAdmin = this.auth.Ifadmin();
+>>>>>>> 0aec5b3a46ea2d49ebad68b791a05e394cc8d647
   }
 
   footerRunLoc(pickplace: string) {
@@ -89,12 +107,30 @@ export class CarlistsComponent implements OnInit {
     this.loading = true;
 
     this.carService.searchCarwithFilter(this.newOptions).subscribe(
+<<<<<<< HEAD
       (res: Car[]) => {
         this.updateCarList(res);
         this.loading = false;
       },
       (error1) => {
         console.log('Erro ao buscar veículos com filtro.');
+=======
+      res => {
+        console.log("CARS FILTRADOS:", res);
+
+        this.cars = res;
+        this.total = res.length;
+        this.showinglist = this.cars.slice(0, this.limit);
+        this.page = 1;
+
+        this.selected = -1;
+        this.selectedCar_p = null;
+
+        this.loading = false;
+      },
+      error => {
+        console.log("search error!!!!!!", error);
+>>>>>>> 0aec5b3a46ea2d49ebad68b791a05e394cc8d647
         this.loading = false;
       }
     );
@@ -109,12 +145,30 @@ export class CarlistsComponent implements OnInit {
     this.loading = true;
 
     this.carService.searchCarProduct(this.pickPlace).subscribe(
+<<<<<<< HEAD
       (res: Car[]) => {
         this.updateCarList(res);
         this.loading = false;
       },
       (error1) => {
         console.log('Erro ao buscar veículos por cidade.');
+=======
+      res => {
+        console.log("CARS POR LOCALIZACAO:", res);
+
+        this.cars = res;
+        this.total = res.length;
+        this.showinglist = this.cars.slice(0, this.limit);
+        this.page = 1;
+
+        this.selected = -1;
+        this.selectedCar_p = null;
+
+        this.loading = false;
+      },
+      error => {
+        console.log("search error!!!!!!", error);
+>>>>>>> 0aec5b3a46ea2d49ebad68b791a05e394cc8d647
         this.loading = false;
       }
     );
@@ -124,6 +178,7 @@ export class CarlistsComponent implements OnInit {
     this.loading = true;
 
     this.carService.getAllProduct().subscribe(
+<<<<<<< HEAD
       (res: Car[]) => {
         this.updateCarList(res);
         this.loading = false;
@@ -142,6 +197,26 @@ export class CarlistsComponent implements OnInit {
     this.selected = -1;
     this.selectedCar_p = null;
     this.showinglist = this.cars.slice(0, this.limit);
+=======
+      res => {
+        console.log("CARS RECEBIDOS:", res);
+
+        this.cars = res;
+        this.total = res.length;
+        this.showinglist = this.cars.slice(0, this.limit);
+        this.page = 1;
+
+        this.selected = -1;
+        this.selectedCar_p = null;
+
+        this.loading = false;
+      },
+      error => {
+        console.log("Erro ao buscar carros:", error);
+        this.loading = false;
+      }
+    );
+>>>>>>> 0aec5b3a46ea2d49ebad68b791a05e394cc8d647
   }
 
   addCarToMaintenance(car: Car) {
@@ -161,9 +236,18 @@ export class CarlistsComponent implements OnInit {
   }
 
   showCarsInMaintenance() {
+<<<<<<< HEAD
     this.cars = this.maintenanceCars;
     this.total = this.maintenanceCars.length;
+=======
+    console.log("CARS EM MANUTENCAO:", this.maintenanceCars);
+
+    this.cars = this.maintenanceCars;
+    this.total = this.cars.length;
+    this.showinglist = this.cars.slice(0, this.limit);
+>>>>>>> 0aec5b3a46ea2d49ebad68b791a05e394cc8d647
     this.page = 1;
+
     this.selected = -1;
     this.selectedCar_p = null;
     this.showinglist = this.maintenanceCars.slice(0, this.limit);

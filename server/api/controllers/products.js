@@ -1,7 +1,7 @@
 var express = require('express');
 
-var mongoose = require('mongoose');
-var Cars = mongoose.model('Cars');
+var Cars = require("../models/carLocalDB.js");
+
 
 var router = express.Router();
 
