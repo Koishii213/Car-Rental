@@ -232,11 +232,17 @@ module.exports.createCar = function (req, res) {
 };
 
 module.exports.deleteCarbyId = function (req, res) {
-    console.log('enter delete');
-    console.log(req.params.id);
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({
+            message: 'Invalid car id'
+        });
+    }
+
+    const carId = mongoose.Types.ObjectId.createFromHexString(req.params.id);
 
     Cars.update(
-        { _id: req.params.id },
+        { _id: carId },
         {
             $set: {
                 isavailable: false
@@ -247,7 +253,7 @@ module.exports.deleteCarbyId = function (req, res) {
                 return res.send(err);
             }
 
-            res.send("Delete Success!");
+            res.json({ message: 'Delete Success!' });
         }
     );
 };
