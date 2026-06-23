@@ -170,31 +170,34 @@ module.exports.searchCarwithFilter = function(req, res) {
 
 };
 
-module.exports.createCar =function (req, res) {
-    var car = new Cars(req.body);
+module.exports.createCar = function (req, res) {
+
+    const carData = {
+        name: req.body.name,
+        type: req.body.type,
+        imageName: req.body.imageName,
+        passengers: req.body.passengers,
+        luggage: req.body.luggage,
+        price: req.body.price,
+        ACsup: req.body.ACsup,
+        isAuto: req.body.isAuto,
+        isavailable: req.body.isavailable
+    };
+
+    var car = new Cars(carData);
+
     car.save(function (err) {
-        if(err){
+        if (err) {
             return res.send(err);
         }
+
         console.log('Car Created');
-        res.json({message: 'Car Created', car: car});
+        res.json({
+            message: 'Car Created',
+            car: car
+        });
     });
 };
-
-module.exports.deleteCarbyId = function (req, res) {
-    console.log('enter delete');
-    console.log(req.params.id);
-    Cars.update({_id: req.params.id}, {
-        $set:{isavailable: false}
-        }, function(err, affected, resp) {
-        if(err){
-            return res.send(err);
-        }
-    });
-    res.send("Delete Success!");
-
-}
-
 module.exports.updateCarInfo = function (req, res) {
 
     if (!mongoose.Types.ObjectId.isValid(req.body._id)) {
