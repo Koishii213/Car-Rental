@@ -14,7 +14,6 @@
     <br>
   </div>
 
-  <!-- botoes novos aqui -->
   <div class="maintenance-buttons">
     <button type="button" (click)="getCarlists()">
       Show all cars
@@ -28,10 +27,8 @@
   <div *ngIf="showCards">
 
     <ul *ngFor="let car of showinglist; let i = index">
-      <li
-        [ngClass]="{'highlight' : selected == i, 'not-highlight' : selected != i}"
-        (click)="car.isavailable && onSelect(i)"
-      >
+      <li tabindex="0" role="button" [ngClass]="{'highlight' : selected == i, 'not-highlight' : selected != i}" (click)="car.isavailable && onSelect(i)" (keydown.enter)="car.isavailable && onSelect(i)"
+        (keydown.space)="car.isavailable && onSelect(i)">
         <app-card
           [car]="car"
           [favorites]="favorites">
