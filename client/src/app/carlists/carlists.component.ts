@@ -21,12 +21,12 @@ export class CarlistsComponent implements OnInit {
   page = 1;
   limit = 4;
 
-  cars: Car[];
-  showinglist: Car[];
-  favorites: favorite[];
-  selectedCar_p: Car;
+  cars: Car[] = [];
+  showinglist: Car[] = [];
+  favorites: favorite[] = [];
+  selectedCar_p: Car = null;
 
-  searchCars: Car[];
+  searchCars: Car[] = [];
 
   maintenanceCars: Car[] = [];
 
@@ -53,7 +53,8 @@ export class CarlistsComponent implements OnInit {
   ngOnInit() {
     console.log("carlist recieved!!~~");
 
-    this.searchCarlists();
+    this.getCarlists();
+
     this.isAdmin = this.auth.Ifadmin();
   }
 
@@ -75,56 +76,74 @@ export class CarlistsComponent implements OnInit {
     this.loading = true;
     console.log(this.newOptions);
 
-    this.carService.searchCarwithFilter(this.newOptions).subscribe(res => {
-      this.cars = res;
-      this.total = res.length;
-      this.showinglist = this.cars.slice(0, this.limit);
-      this.page = 1;
+    this.carService.searchCarwithFilter(this.newOptions).subscribe(
+      res => {
+        console.log("CARS FILTRADOS:", res);
 
-      this.selected = -1;
-      this.selectedCar_p = null;
+        this.cars = res;
+        this.total = res.length;
+        this.showinglist = this.cars.slice(0, this.limit);
+        this.page = 1;
 
-      this.loading = false;
-    }, error1 => {
-      console.log("search error!!!!!!");
-      this.loading = false;
-    });
+        this.selected = -1;
+        this.selectedCar_p = null;
+
+        this.loading = false;
+      },
+      error => {
+        console.log("search error!!!!!!", error);
+        this.loading = false;
+      }
+    );
   }
 
   searchCarlists() {
     this.loading = true;
 
-    this.carService.searchCarProduct(this.pickPlace).subscribe(res => {
-      this.cars = res;
-      this.total = res.length;
-      this.showinglist = this.cars.slice(0, this.limit);
-      this.page = 1;
+    this.carService.searchCarProduct(this.pickPlace).subscribe(
+      res => {
+        console.log("CARS POR LOCALIZACAO:", res);
 
-      this.selected = -1;
-      this.selectedCar_p = null;
+        this.cars = res;
+        this.total = res.length;
+        this.showinglist = this.cars.slice(0, this.limit);
+        this.page = 1;
 
-      this.loading = false;
-    }, error1 => {
-      console.log("search error!!!!!!");
-      this.loading = false;
-    });
+        this.selected = -1;
+        this.selectedCar_p = null;
+
+        this.loading = false;
+      },
+      error => {
+        console.log("search error!!!!!!", error);
+        this.loading = false;
+      }
+    );
   }
 
   getCarlists() {
     console.log('--get all cars-');
     this.loading = true;
 
-    this.carService.getAllProduct().subscribe(res => {
-      this.cars = res;
-      this.total = res.length;
-      this.showinglist = this.cars.slice(0, this.limit);
-      this.page = 1;
+    this.carService.getAllProduct().subscribe(
+      res => {
+        console.log("CARS RECEBIDOS:", res);
 
-      this.selected = -1;
-      this.selectedCar_p = null;
+        this.cars = res;
+        this.total = res.length;
+        this.showinglist = this.cars.slice(0, this.limit);
+        this.page = 1;
 
-      this.loading = false;
-    });
+        this.selected = -1;
+        this.selectedCar_p = null;
+
+        this.loading = false;
+      },
+      error => {
+        console.log("Erro ao buscar carros:", error);
+        this.loading = false;
+      }
+    );
   }
 
   addCarToMaintenance(car: Car) {
@@ -147,10 +166,13 @@ export class CarlistsComponent implements OnInit {
   }
 
   showCarsInMaintenance() {
-    this.showinglist = this.maintenanceCars.slice(0, this.limit);
+    console.log("CARS EM MANUTENCAO:", this.maintenanceCars);
 
-    this.total = this.maintenanceCars.length;
+    this.cars = this.maintenanceCars;
+    this.total = this.cars.length;
+    this.showinglist = this.cars.slice(0, this.limit);
     this.page = 1;
+
     this.selected = -1;
     this.selectedCar_p = null;
   }
