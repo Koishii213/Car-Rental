@@ -1,102 +1,74 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {driverinfo} from "../bookingdetail/bookingdetail.component";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class BookingsService {
 
-  constructor(private http:HttpClient) { }
+  public booking: Booking = new Booking(
+    '',
+    '',
+    '',
+    '',
+    0,
+    '',
+    '',
+    {
+      firstname: '',
+      lastname: '',
+      email: '',
+      phone: ''
+    }
+  );
 
-  booking:Booking;
+  constructor(private http: HttpClient) { }
 
-  getBookingsByEmail(email:string){
-    return this.http.get(`/api/booking/${email}`);
+  getBookingsByEmail(email: string) {
+    var userEmail = encodeURIComponent(email);
 
+    return this.http.get('/api/booking/' + userEmail);
   }
 
-  createBooking(booking:Booking){
-    return this.http.post(`/api/booking`, booking);
+  createBooking(booking: Booking) {
+    return this.http.post('/api/booking', booking);
   }
 
-  setBooking(booking:Booking){
+  setBooking(booking: Booking) {
     this.booking = booking;
   }
 
-  getBooking(){
+  getBooking() {
     return this.booking;
   }
-
-  // getUpcBooking(): Booking{
-  //   return new Booking(
-  //     'bookingid',
-  //     '2017-08-1',
-  //     '2017-08-04',
-  //     'DFW',
-  //     'DFW',
-  //     355,
-  //     'carid',
-  //     'useid'
-  //   );
-  // }
-  // getPastBooking(): Booking{
-  //   return new Booking(
-  //     'bookingid',
-  //     '2017-01-1',
-  //     '2017-01-04',
-  //     'DFW',
-  //     'DFW',
-  //     255,
-  //     'carid',
-  //     'useid'
-  //   );
-  // }
-  //
-  // getCncldBooking(): Booking{
-  //   return new Booking(
-  //     'bookingid',
-  //     '2017-04-1',
-  //     '2017-04-04',
-  //     'DFW',
-  //     'DFW',
-  //     333,
-  //     'carid',
-  //     'useid'
-  //
-  //   );
-  // }
 }
 
-export class Booking{
+export class Booking {
 
-  pickupdate:string;
-  dropoffdate:string;
-  pickuploc:string;
-  dropoffloc:string;
-  price:number;
-  carid:string;
-  email:string;
-  driverinfo:object;
+  public pickupdate: string;
+  public dropoffdate: string;
+  public pickuploc: string;
+  public dropoffloc: string;
+  public price: number;
+  public carid: string;
+  public email: string;
+  public driverinfo: object;
 
   constructor(
-    pickupdate:string,
-    dropoffdate:string,
-    pickuploc:string,
-    dropoffloc:string,
-    price:number,
-    carid:string,
-    email:string,
-    driverinfo:object
-  ){
+    pickupdate: string,
+    dropoffdate: string,
+    pickuploc: string,
+    dropoffloc: string,
+    price: number,
+    carid: string,
+    email: string,
+    driverinfo: object
+  ) {
     this.pickupdate = pickupdate;
-    this.dropoffdate =dropoffdate;
+    this.dropoffdate = dropoffdate;
     this.pickuploc = pickuploc;
     this.dropoffloc = dropoffloc;
     this.price = price;
     this.carid = carid;
     this.email = email;
-    this.driverinfo=driverinfo;
+    this.driverinfo = driverinfo;
   }
-
-
-
 }

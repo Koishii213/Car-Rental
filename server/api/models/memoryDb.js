@@ -61,6 +61,7 @@ function queryResult(result) {
 
 function seedIfNeeded(name, items) {
   stores[name] = stores[name] || [];
+
   if (stores[name].length === 0 && items && items.length) {
     stores[name] = items.map(function(item) {
       var copy = clone(item);
@@ -106,6 +107,7 @@ function createModel(name, schema) {
     var found = stores[name].find(function(doc) {
       return matches(doc, query);
     }) || null;
+
     var result = hydrate(found);
 
     if (callback) callback(null, result);
@@ -116,6 +118,7 @@ function createModel(name, schema) {
     var found = stores[name].find(function(doc) {
       return normalizeValue(doc._id) === normalizeValue(id);
     }) || null;
+
     var result = hydrate(found);
 
     if (callback) callback(null, result);
@@ -124,6 +127,7 @@ function createModel(name, schema) {
 
   MemoryModel.update = function(query, update, callback) {
     var count = 0;
+
     stores[name].forEach(function(doc) {
       if (matches(doc, query)) {
         if (update && update.$set) {
@@ -131,6 +135,7 @@ function createModel(name, schema) {
         } else if (update) {
           Object.assign(doc, update);
         }
+
         count++;
       }
     });
@@ -141,9 +146,11 @@ function createModel(name, schema) {
 
   MemoryModel.remove = function(query, callback) {
     var before = stores[name].length;
+
     stores[name] = stores[name].filter(function(doc) {
       return !matches(doc, query);
     });
+
     var removed = before - stores[name].length;
 
     if (callback) callback(null, { n: removed });
@@ -152,6 +159,7 @@ function createModel(name, schema) {
 
   MemoryModel.prototype.save = function(callback) {
     var data = clone(this);
+
     var index = stores[name].findIndex(function(doc) {
       return normalizeValue(doc._id) === normalizeValue(data._id);
     });
@@ -178,7 +186,9 @@ module.exports.install = function(mongoose) {
       return createModel(name, schema);
     }
 
-    if (models[name]) return models[name];
+    if (models[name]) {
+      return models[name];
+    }
 
     try {
       return originalModel(name);
@@ -208,14 +218,14 @@ module.exports.seedCars = function seedCars() {
       name: 'Nissan Altima',
       type: 'Standard',
       imageName: '/assets/carimages/nissan_altima_standard_brl_287x164.jpg',
-      pickupLoc: 'DALLAS LOVE FIELD - Dallas Love Field'
+      pickupLoc: 'Russas'
     }),
 
     createCar({
       name: 'Chevrolet Sonica',
       type: 'Economy',
       imageName: '/assets/carimages/chevrolet_sonic_economy_brl_287x164.jpg',
-      pickupLoc: 'Plano high school'
+      pickupLoc: 'Fortaleza'
     }),
 
     createCar({
@@ -223,7 +233,7 @@ module.exports.seedCars = function seedCars() {
       type: 'Standard',
       imageName: '/assets/carimages/chevrolet_cruze_intermediate_brl_287x164.jpg',
       price: 60.00,
-      pickupLoc: 'Richardison Bell street',
+      pickupLoc: 'Jaguaruana',
       insurance: 12.00
     }),
 
@@ -234,7 +244,7 @@ module.exports.seedCars = function seedCars() {
       passengers: 7,
       luggage: 3,
       price: 120.00,
-      pickupLoc: 'UTD',
+      pickupLoc: 'Limoeiro do Norte',
       insurance: 20.00
     }),
 
@@ -244,8 +254,9 @@ module.exports.seedCars = function seedCars() {
       imageName: '/assets/carimages/chrysler_300_luxury_brl_287x164.jpg',
       luggage: 3,
       price: 210.00,
-      pickupLoc: 'UTD',
-      insurance: 30.00
+      pickupLoc: 'Russas',
+      insurance: 30.00,
+      isavailable: false
     })
   ]);
 };

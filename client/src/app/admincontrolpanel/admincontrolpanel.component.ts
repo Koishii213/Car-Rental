@@ -1,49 +1,51 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ProductService} from "../services/product.service";
-import {Car} from "../class/car";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-// import { saveAs } from 'file-saver/FileSaver';
-import {observeOn} from "rxjs/operators";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
+import { ProductService } from '../services/product.service';
+import { Car } from '../class/car';
 
 @Component({
   selector: 'app-admincontrolpanel',
   templateUrl: './admincontrolpanel.component.html',
   styleUrls: ['./admincontrolpanel.component.css']
 })
-
-
 export class AdmincontrolpanelComponent implements OnInit {
 
-  @Output() private getAll = new EventEmitter();
-  @Input() seletedCar:Car;
+  @Output() public getAll = new EventEmitter<void>();
+  @Input() public seletedCar: Car | null = null;
 
-  showDeleteDialog :boolean = false;
-  showUpdataDialog :boolean = false;
-  showAddDialog :boolean = false;
-  // imageName:string;
-  imageUrl:string = '/assets/car-rental-logo.jpg';
-  fileToUpload:File;
-  formCarInfo:Car;
+  public showDeleteDialog: boolean = false;
+  public showUpdataDialog: boolean = false;
+  public showAddDialog: boolean = false;
 
+  public imageUrl: string = '/assets/car-rental-logo.jpg';
+  public fileToUpload: File | null = null;
 
+  public formCarInfo: Car = new Car(
+    '',
+    'Standard',
+    2,
+    0,
+    2,
+    true,
+    true,
+    '',
+    0,
+    '/assets/car-rental-logo.jpg',
+    true
+  );
 
-  constructor(private productService:ProductService, private http:HttpClient) {
-  }
+  constructor(
+    private productService: ProductService,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
-    this.seletedCar = null;
-    if(this.seletedCar != null){
-      this.formCarInfo = this.seletedCar;
-    }
-    else{
-      this.initCarForm();
-    }
-
+    this.initCarForm();
   }
 
-  initCarForm(){
-    this.formCarInfo  =  new Car(
+  initCarForm() {
+    this.formCarInfo = new Car(
       '',
       'Standard',
       2,
@@ -51,201 +53,143 @@ export class AdmincontrolpanelComponent implements OnInit {
       2,
       true,
       true,
-      "",
+      '',
       0,
       '/assets/car-rental-logo.jpg',
       true
     );
+
+    this.imageUrl = '/assets/car-rental-logo.jpg';
+    this.fileToUpload = null;
   }
 
-  confirmDelete(){
+  confirmDelete() {
+    if (!this.seletedCar || !this.seletedCar._id) {
+      return;
+    }
+
     this.productService.deleteCarById(this.seletedCar._id).subscribe(
-      (data)=>{
-        // console.log(data);
-        console.log('*********');
-        // this.getAllCarList();
-      },(err)=>{
-        console.log(err);
+      (data) => {
+        this.getAllCarList();
+      },
+      (err) => {
+        console.log('Erro ao remover veículo.');
       }
     );
-    this.getAllCarList();
-    this.showDeleteDialog = false;
-    console.log("confirm delete: "+ this.seletedCar._id+ this.seletedCar.name);
 
+    this.showDeleteDialog = false;
   }
 
-  getAllCarList(){
+  getAllCarList() {
     this.getAll.emit();
+
     this.showDeleteDialog = false;
     this.showUpdataDialog = false;
     this.showAddDialog = false;
   }
 
-  closeDialog(){
+  closeDialog() {
     this.showDeleteDialog = false;
     this.showUpdataDialog = false;
     this.showAddDialog = false;
   }
 
   addBtnClicked() {
-
     this.initCarForm();
     this.showAddDialog = true;
-
   }
+
   editBtnClick() {
-    this.initCarForm();
-    if(this.seletedCar != null){
-      this.showUpdataDialog = true;
+    if (this.seletedCar != null) {
       this.formCarInfo = this.seletedCar;
+      this.showUpdataDialog = true;
     }
-
-
   }
 
   deleteBtnClick() {
-    if(this.seletedCar != null){
+    if (this.seletedCar != null) {
       this.showDeleteDialog = !this.showDeleteDialog;
     }
   }
 
-  // onFileSeleted(e) {
-  //   this.imageName = e.target.files[0];
-  //   alert(this.imageName);
-  //
-  // }
-  //
-  // onUpload() {
-  //   const fd = new FormData();
-  //   fd.append('image', this.imageName);
-  //   // this.http.post()
-  // }
-
   handleFileInput(file: FileList) {
-    console.log('handlefile');
+    if (!file || file.length === 0) {
+      return;
+    }
+
     this.fileToUpload = file.item(0);
 
-    let reader = new FileReader();
-    reader.onload = (event:any) => {
+    if (!this.fileToUpload) {
+      return;
+    }
+
+    var reader = new FileReader();
+
+    reader.onload = (event: any) => {
       this.imageUrl = event.target.result;
     };
 
     reader.readAsDataURL(this.fileToUpload);
-    this.formCarInfo.imageName = '/assets/uploadedImage/'+this.fileToUpload.name;
 
-    //
-    // reader.onload = function(e) {
-    //   var url = e.target;
-    //   console.log(e.target); //返回图片url
-    // };
-
+    this.formCarInfo.imageName = '/assets/uploadedImage/' + this.fileToUpload.name;
   }
 
-  onImageSubmit(){
-    console.log('onImageSubmit');
-    // this.http.post('/api/image', sdfs);
-    let file = this.fileToUpload;
-    // const headers = new HttpHeaders()
-    //   .append('Content-Type', 'multipart/form-data');
+  onImageSubmit() {
+    if (!this.fileToUpload) {
+      return;
+    }
 
-    const formData: FormData = new FormData();
-    formData.append('CarImage', file, file.name);
+    var formData: FormData = new FormData();
 
-    console.log(formData);
+    formData.append('CarImage', this.fileToUpload, this.fileToUpload.name);
 
-    this.http.post('/api/image/post', formData)
-      .subscribe(
-        res => {
-          console.log("get response after post picture");
-          console.log(res);
-        },
-        err => {
-          console.log("Error occured when post Image");
-        }
-      );
-
-    // const endpoint = '/api/image/post';
-    // const formData: FormData = new FormData();
-    // // formData.append('fileKey', file, file.name);
-    // formData.set('imageName', this.fileToUpload.name);
-    // formData.set('imageData', this.imageUrl);
-    //
-    //
-    //
-    // this.http
-    //   .post(endpoint, formData ).subscribe(
-    //   res => {
-    //           console.log("get response after post picture");
-    //           console.log(res);
-    //         },
-    //         err => {
-    //           console.log("Error occured when post Image");
-    //         }
-    // );
-
-
-    console.log('postCar finish');
-
-  }
-
-
-  // setACsup($event) {
-  //   console.log($event.target.value);
-  //   console.log(this.formCarInfo.ACsup);
-  //   // if($event.target.value == 'true'){
-  //   //   this.formCarInfo.ACsup = true;
-  //   //
-  //   //   // formCarInfo_ACsup="";
-  //   //   console.log('setacsup to true');
-  //   // }
-  //   // else {
-  //   //   this.formCarInfo.ACsup = false;
-  //   //   console.log('setacsup to false');
-  //   // }
-  //   console.log($event.target.value);
-  //   console.log(this.formCarInfo.ACsup);
-  //
-  // }
-
-  // setIsAuto($event) {
-  //   console.log($event.target.value);
-  //   console.log(this.formCarInfo.isAuto);
-  //   if($event.target.value == 'YES'){
-  //     this.formCarInfo.isAuto = true;
-  //     // formCarInfo_isAuto: any;
-  //   }
-  //   else{
-  //     this.formCarInfo.isAuto = false;
-  //   }
-  //   console.log($event.target.value);
-  //   console.log(this.formCarInfo.isAuto);
-  //
-  //
-  // }
-  clickToAddCar() {
-    this.showAddDialog = false;
-    console.log(this.formCarInfo);
-    this.productService.createCar(this.formCarInfo).subscribe(
-      (data)=>{
-        console.log(data);
-      },(err)=>{
-        console.log(err);
+    this.http.post('/api/image/post', formData).subscribe(
+      (res) => {
+        console.log('Imagem enviada com sucesso.');
+      },
+      (err) => {
+        console.log('Erro ao enviar imagem.');
       }
     );
-    this.getAllCarList();
+  }
+
+  clickToAddCar() {
+    if (!this.formCarInfo.pickupLoc || this.formCarInfo.pickupLoc.trim() === '') {
+      alert('Informe a cidade/local de retirada do veículo.');
+      return;
+    }
+
+    this.formCarInfo.pickupLoc = this.formCarInfo.pickupLoc.trim();
+
+    this.productService.createCar(this.formCarInfo).subscribe(
+      (data) => {
+        this.getAllCarList();
+      },
+      (err) => {
+        console.log('Erro ao cadastrar veículo.');
+      }
+    );
+
+    this.showAddDialog = false;
   }
 
   confirmUpdateCarInfo() {
-    this.showUpdataDialog = false;
-    console.log('---updated infor---');
-    console.log(this.formCarInfo);
+    if (!this.formCarInfo.pickupLoc || this.formCarInfo.pickupLoc.trim() === '') {
+      alert('Informe a cidade/local de retirada do veículo.');
+      return;
+    }
+
+    this.formCarInfo.pickupLoc = this.formCarInfo.pickupLoc.trim();
+
     this.productService.putCar(this.formCarInfo).subscribe(
-      (data)=>{
-        console.log(data);
-      },(err)=>{
-        console.log(err);
+      (data) => {
+        this.getAllCarList();
+      },
+      (err) => {
+        console.log('Erro ao atualizar veículo.');
       }
     );
-    this.getAllCarList();
+
+    this.showUpdataDialog = false;
   }
 }

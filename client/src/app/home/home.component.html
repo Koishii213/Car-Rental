@@ -1,10 +1,27 @@
 <app-header></app-header>
-<app-search #search [dataset]="dataset" (searchCar)="runParent($event)"></app-search>
+
+<app-search
+  #search
+  [dataset]="dataset"
+  (searchCar)="runParent($event)">
+</app-search>
+
 <div class="row">
-  <!--<div class = "col-md-1"></div>-->
-    <app-filter #filter (carFilter)="getFilter($event)" class = "col-md-3"></app-filter>
-    <app-carlists #carlists [pickPlace]="pickplace" class = "col-md-8"></app-carlists>
-  <div class = "col-md-1"></div>
+
+  <app-filter
+    #filter
+    (carFilter)="getFilter($event)"
+    class="col-md-3">
+  </app-filter>
+
+  <app-carlists
+    #carlists
+    [pickPlace]="pickplace"
+    class="col-md-8">
+  </app-carlists>
+
+  <div class="col-md-1"></div>
+
 </div>
 
 <app-footer></app-footer>
