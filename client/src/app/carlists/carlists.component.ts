@@ -24,14 +24,14 @@ export class CarlistsComponent implements OnInit {
   cars: Car[] = [];
   showinglist: Car[] = [];
   favorites: favorite[] = [];
-  selectedCar_p: Car = null;
+
+  selectedCar_p: Car | null = null;
 
   searchCars: Car[] = [];
-
   maintenanceCars: Car[] = [];
 
-  @Input() public pickPlace: string;
-  public newOptions: NewFilterOptions;
+  @Input() public pickPlace: string = "";
+  public newOptions!: NewFilterOptions;
 
   constructor(
     private carService: ProductService,
@@ -183,11 +183,12 @@ export class CarlistsComponent implements OnInit {
     );
   }
 
-  onSelect(e) {
+  onSelect(e: number) {
     if (e != this.selected) {
       this.selected = e;
       this.selectedCar_p = this.showinglist[e];
-      console.log("index:" + e + " _id:" + this.showinglist[e]._id);
+
+      console.log("index:" + e + " _id:" + (this.showinglist[e] as any)._id);
     } else {
       this.selected = -1;
       this.selectedCar_p = null;
